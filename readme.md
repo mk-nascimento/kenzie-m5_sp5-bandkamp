@@ -46,7 +46,7 @@ pip install pytest-testdox pytest-django
 pytest --testdox -vvs
 ```
 
-5. Caso queira um log mais resumido, basta executa com os testes sem as flags **verbose**:
+5. Caso queira um log mais resumido, basta executar com os testes sem as flags **verbose**:
 ```shell
 pytest --testdox
 ```
