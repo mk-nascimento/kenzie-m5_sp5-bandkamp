@@ -24,7 +24,7 @@ class AlbumView(APIView, PageNumberPagination):
 
     def post(self, request):
         """
-        Crioaçao de album
+        Criaçao de album
         """
         serializer = AlbumSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
