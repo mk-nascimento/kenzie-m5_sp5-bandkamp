@@ -232,7 +232,7 @@ class UserDetailViewsTest(APITestCase):
         )
         self.assertDictEqual(expected_data, resulted_data, msg)
 
-        user = User.objects.last()
+        user = User.objects.first()
         msg = (
             f"Verifique se a senha está sendo atualizada no {response.request['REQUEST_METHOD']} em "
             + f"em `{self.BASE_URL}`"
