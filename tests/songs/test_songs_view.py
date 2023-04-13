@@ -15,6 +15,8 @@ class SongViewTest(APITestCase):
         cls.access_token = str(token.access_token)
 
         cls.album = create_album_with_user(user=cls.user)
+        cls.album_2 = create_album_with_user(user=cls.user)
+        
 
         cls.BASE_URL = f"/api/albums/{cls.album.pk}/songs/"
 
@@ -22,9 +24,12 @@ class SongViewTest(APITestCase):
         cls.maxDiff = None
 
     def test_songs_listing_pagination(self):
-        songs_count = 10
+        songs_count = 1
         create_multiple_songs_with_album(
             user=self.user, songs_count=songs_count, album=self.album
+        )
+        create_multiple_songs_with_album(
+            user=self.user, songs_count=songs_count, album=self.album_2
         )
 
         response = self.client.get(self.BASE_URL)
@@ -38,12 +43,36 @@ class SongViewTest(APITestCase):
 
         # TAMANHO DO RETORNO
         results_len = len(resulted_data["results"])
-        expected_len = 2
+        expected_len = 1
         msg = (
             "Verifique se a paginação está retornando apenas "
             + f"{expected_len} items de cada vez no GET em {self.BASE_URL}"
         )
         self.assertEqual(expected_len, results_len, msg)
+
+
+        list_album_ids = [item.get("album_id", None) for item in resulted_data["results"]]
+        msg = (
+            "Verifique se você está retornando a chave 'album_id' de cada música " +
+            f"no GET em {self.BASE_URL}"
+        )
+        self.assertIsNotNone(list_album_ids, msg)
+
+        expected_set_album_ids = {self.album.pk}
+        resulted_set_album_ids = set(list_album_ids)
+        msg = (
+            "Verifique se você está retornando somente as músicas " +
+            "que pertencem ao álbum especificado " +
+            f"no GET em {self.BASE_URL}" 
+            )
+
+        expected_len_album_id_set = len(expected_set_album_ids)
+        self.assertEqual(expected_len_album_id_set, len(resulted_set_album_ids), msg)
+
+        self.assertSetEqual(expected_set_album_ids, resulted_set_album_ids, msg)
+
+
+
 
     def test_song_creation_without_required_fields(self):
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.access_token)

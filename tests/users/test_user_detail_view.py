@@ -228,13 +228,13 @@ class UserDetailViewsTest(APITestCase):
         resulted_data = response.json()
         msg = (
             "Verifique se os dados retornados do PATCH com token correto em "
-            + f"em `{self.BASE_URL}` é {expected_data}"
+            + f"`{self.BASE_URL}` é {expected_data}"
         )
         self.assertDictEqual(expected_data, resulted_data, msg)
 
         user = User.objects.first()
         msg = (
             f"Verifique se a senha está sendo atualizada no {response.request['REQUEST_METHOD']} em "
-            + f"em `{self.BASE_URL}`"
+            + f"`{self.BASE_URL}`"
         )
         self.assertTrue(user.check_password(info_to_patch["password"]), msg)
