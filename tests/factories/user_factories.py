@@ -10,8 +10,8 @@ def create_user_with_token(user_data=None) -> tuple[AbstractUser, RefreshToken]:
         user_data = {
             "username": "lucira_buster",
             "email": "lucira_buster@kenziebuster.com",
-            "first_name": "Lucira",
-            "last_name": "Buster",
+            "full_name": "Lucira",
+            "artistic_name": "Buster",
             "password": "1234",
         }
 

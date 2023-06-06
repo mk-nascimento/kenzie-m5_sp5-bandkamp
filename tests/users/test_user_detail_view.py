@@ -16,8 +16,8 @@ class UserDetailViewsTest(APITestCase):
         user_2_data = {
             "username": "lucira_buster_2",
             "email": "lucira_buster_2@kenziebuster.com",
-            "first_name": "Lucira",
-            "last_name": "Buster",
+            "full_name": "Lucira",
+            "artistic_name": "Buster",
             "password": "1234",
         }
 
@@ -90,9 +90,8 @@ class UserDetailViewsTest(APITestCase):
             "id": self.user_1.pk,
             "username": self.user_1.username,
             "email": self.user_1.email,
-            "first_name": self.user_1.first_name,
-            "last_name": self.user_1.last_name,
-            "is_superuser": self.user_1.is_superuser,
+            "full_name": self.user_1.full_name,
+            "artistic_name": self.user_1.artistic_name,
         }
         resulted_data = response.json()
         msg = (
@@ -200,9 +199,9 @@ class UserDetailViewsTest(APITestCase):
         info_to_patch = {
             "username": "lucira_buster_5000",
             "email": "lucira_buster_5000@kenziebuster.com",
-            "first_name": "Lucira5000",
-            "last_name": "Buster5000",
-            "password": "lucira1234!@@@3"
+            "full_name": "Lucira5000",
+            "artistic_name": "Buster5000",
+            "password": "lucira1234!@@@3",
         }
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.access_token_1)
         response = self.client.patch(self.BASE_URL, data=info_to_patch, format="json")
@@ -221,20 +220,22 @@ class UserDetailViewsTest(APITestCase):
             "id": self.user_1.pk,
             "username": info_to_patch["username"],
             "email": info_to_patch["email"],
-            "first_name": info_to_patch["first_name"],
-            "last_name": info_to_patch["last_name"],
-            "is_superuser": self.user_1.is_superuser,
+            "full_name": info_to_patch["full_name"],
+            "artistic_name": info_to_patch["artistic_name"],
         }
         resulted_data = response.json()
         msg = (
             "Verifique se os dados retornados do PATCH com token correto em "
-            + f"`{self.BASE_URL}` é {expected_data}"
+            + f"em `{self.BASE_URL}` é {expected_data}"
         )
         self.assertDictEqual(expected_data, resulted_data, msg)
 
         user = User.objects.first()
         msg = (
             f"Verifique se a senha está sendo atualizada no {response.request['REQUEST_METHOD']} em "
-            + f"`{self.BASE_URL}`"
+            + f"em `{self.BASE_URL}`"
         )
+        import ipdb
+
+        # ipdb.set_trace()
         self.assertTrue(user.check_password(info_to_patch["password"]), msg)
