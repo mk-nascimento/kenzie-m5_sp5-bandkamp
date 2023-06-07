@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from rest_framework_simplejwt.tokens import RefreshToken
+from users.models import User as UserModel
 
 User: AbstractUser = get_user_model()
 
 
-def create_user_with_token(user_data=None) -> tuple[AbstractUser, RefreshToken]:
+def create_user_with_token(user_data=None) -> tuple[UserModel, RefreshToken]:
     if not user_data:
         user_data = {
             "username": "lucira_buster",
