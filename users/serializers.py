@@ -17,7 +17,7 @@ class UserSerializer(serializers.Serializer):
         validators=[UniqueValidator(queryset=User.objects.all())],
     )
     password = serializers.CharField(write_only=True)
-    full_name = serializers.CharField(max_length=50)
+    full_name = serializers.CharField(max_length=50, required=False)
     artistic_name = serializers.CharField(max_length=50)
 
     def create(self, validated_data: dict) -> User:
