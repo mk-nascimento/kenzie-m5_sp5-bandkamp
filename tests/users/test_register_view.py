@@ -24,7 +24,6 @@ class UserRegistrationViewTest(APITestCase):
             "email",
             "username",
             "password",
-            "full_name",
             "artistic_name",
         }
         returned_fields = set(resulted_data.keys())
