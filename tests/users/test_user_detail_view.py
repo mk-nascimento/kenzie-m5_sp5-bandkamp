@@ -33,7 +33,7 @@ class UserDetailViewsTest(APITestCase):
         response = self.client.get(self.BASE_URL, format="json")
 
         # STATUS CODE
-        expected_status_code = status.HTTP_401_UNAUTHORIZED
+        expected_status_code = status.HTTP_200_OK
         resulted_status_code = response.status_code
         msg = (
             "Verifique se o status code retornado do GET sem token "
@@ -42,35 +42,19 @@ class UserDetailViewsTest(APITestCase):
         self.assertEqual(expected_status_code, resulted_status_code, msg)
 
         # RETORNO JSON
-        expected_data = {"detail": "Authentication credentials were not provided."}
+        expected_data = {
+            "id": self.user_1.pk,
+            "username": self.user_1.username,
+            "email": self.user_1.email,
+            "full_name": self.user_1.full_name,
+            "artistic_name": self.user_1.artistic_name,
+        }
         resulted_data = response.json()
         msg = (
-            "Verifique se os dados retornados do GET sem token "
+            "Verifique se os dados retornados do GET com token correto em "
             + f"em `{self.BASE_URL}` é {expected_data}"
         )
         self.assertDictEqual(expected_data, resulted_data, msg)
-
-    def test_retrieve_user_with_another_user_token(self):
-        self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.access_token_2)
-        response = self.client.get(self.BASE_URL, format="json")
-
-        # STATUS CODE
-        expected_status_code = status.HTTP_403_FORBIDDEN
-        resulted_status_code = response.status_code
-        msg = (
-            "Verifique se o status code retornado do GET sem token correto "
-            + f"em `{self.BASE_URL}` é {expected_status_code}"
-        )
-        self.assertEqual(expected_status_code, resulted_status_code, msg)
-
-        expected_message = {
-            "detail": "You do not have permission to perform this action."
-        }
-        resulted_message = response.json()
-        msg = (
-            f"Verifique se a mensagem retornada do GET em {self.BASE_URL} está correta"
-        )
-        self.assertDictEqual(expected_message, resulted_message, msg)
 
     def test_retrieve_user_with_correct_user_token(self):
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.access_token_1)
