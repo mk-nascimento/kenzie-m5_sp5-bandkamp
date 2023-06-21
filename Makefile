@@ -1,10 +1,14 @@
-.PHONY: install migrate createsuperuser runserver clean reset help
-
+.PHONY: py install migrate createsuperuser runserver clean reset help
 
 PYTHON := python
 PIP := pip
 PROJECT := bandkamp
 DB := db.sqlite3
+
+# Show active Python path and version
+py:
+	@echo "\nPython Executable Path: $(shell which $(PYTHON))"
+	@echo "Python Version: $(shell $(PYTHON) --version)"
 
 # Install dependencies
 install:
@@ -44,6 +48,7 @@ help:
 	@echo "Usage: make [command]"
 	@echo ""
 	@echo "Available commands:"
+	@echo "  py               Show active Python path and version"
 	@echo "  install          Install dependencies"
 	@echo "  migrate          Run database migrations"
 	@echo "  createsuperuser  Create a superuser"
