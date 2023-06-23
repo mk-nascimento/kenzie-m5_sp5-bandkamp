@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -7,7 +6,7 @@ from .models import Album
 from .serializers import AlbumSerializer
 
 
-class AlbumView(generics.ListCreateAPIView, PageNumberPagination):
+class AlbumView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
 

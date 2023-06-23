@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -7,7 +6,7 @@ from .models import Song
 from .serializers import SongSerializer
 
 
-class SongView(generics.ListCreateAPIView, PageNumberPagination):
+class SongView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
 
