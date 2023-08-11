@@ -1,74 +1,79 @@
 # M5 - BandKamp Generic View
 
-## Instalação dos pacotes de teste
+## Preparando ambiente para execução dos testes
 
-- Verifique se os pacotes `pytest` e/ou `pytest-testdox` estão instalados globalmente em seu sistema:
+1. Verifique se os pacotes **pytest**, **pytest-testdox** e/ou **pytest-django** estão instalados globalmente em seu sistema:
 ```shell
 pip list
 ```
-- Caso seja listado o `pytest` e/ou `pytest-testdox` e/ou `pytest-django` em seu ambiente global, utilize os seguintes comando para desinstalá-los globalmente:
-```shell
-pip uninstall pytest
-```
+
+2. Caso eles apareçam na listagem, rode os comandos abaixo para realizar a desinstalação:
 
 ```shell
-pip uninstall pytest-testdox
+pip uninstall pytest pytest-testdox pytest-django -y
 ```
 
+3. Após isso, crie seu ambiente virtual:
 ```shell
-pip uninstall pytest-django
-```
-
-A partir disso, prossiga com os passos:
-
-1. Crie seu ambiente virtual:
-```bash
 python -m venv venv
 ```
 
-2. Ative seu venv:
-```bash
-# Linux:
+4. Ative seu ambiente virtual:
+
+```shell
+# Linux e Mac:
 source venv/bin/activate
 
-# Windows (Powershell):
+# Windows (PowerShell):
 .\venv\Scripts\activate
 
-# Windows (Git Bash):
+# Windows (GitBash):
 source venv/Scripts/activate
 ```
 
-3. Instale o pacote `pytest-testdox`:
+5. Instale as bibliotecas necessárias:
+
 ```shell
 pip install pytest-testdox pytest-django
 ```
 
 
-4. Agora é só rodar os testes no diretório principal do projeto:
+## Execução dos testes:
+
+Como este projeto se trata de uma refatoração, não terá divisão de testes por tarefa, pois o objetivo é que todos os testes continuem passando após a refatoração.
+Deste modo, para rodar a bateria de todos os testes, utilize:
 ```shell
 pytest --testdox -vvs
 ```
+---
 
-5. Caso queira um log mais resumido, basta executar com os testes sem as flags **verbose**:
-```shell
-pytest --testdox
-```
+Caso você tenha interesse em rodar apenas um diretório de testes específico, utilize os comandos abaixo:
 
-## Rodando os testes por partes
-
-Caso você tenha interesse em rodar apenas um diretório de testes específico, pode utilizar o comando:
-
-- Rodando testes de users:
+Users:
 ```python
 pytest --testdox -vvs tests/users/
 ```
 
-- Rodando testes de albums:
+Albums:
 ```python
 pytest --testdox -vvs tests/albums/
 ```
 
-- Rodando testes de songs:
+Songs:
 ```python
 pytest --testdox -vvs tests/songs/
+```
+
+---
+
+Você também pode rodar cada método de teste isoladamente:
+
+```shell
+pytest --testdox -vvs caminho/para/o/arquivo/de/teste::NomeDaClasse::nome_do_metodo_de_teste
+```
+
+**Exemplo**: executar somente "test_user_login_without_required_fields".
+
+```shell
+pytest --testdox -vvs tests/users/test_login_view.py::UserLoginViewTest::test_user_login_without_required_fields
 ```
